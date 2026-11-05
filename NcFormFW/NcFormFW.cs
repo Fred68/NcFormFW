@@ -534,12 +534,43 @@ anche se con molti spazi ?
 			control.MouseEnter += eMouseEnter;
 			control.MouseLeave += eMouseLeave;
 		}
+
+		/// <summary>
+		/// Add item into main menu
+		/// </summary>
+		/// <param name="txt">Text</param>
+		/// <param name="pos">Position in the menu (-1 at the end)</param>
+		/// <param name="handler">Handler: public delegate void EventHandler(object sender, EventArgs e);</param>
+		/// <returns></returns>
+		protected ToolStripMenuItem AddSystemMenuItem(string txt, int pos, EventHandler handler)
+		{
+			ToolStripMenuItem tsmi = null;
+			if(pos >= -1)
+			{
+				tsmi = new ToolStripMenuItem();
+				// tsmi.Size = new System.Drawing.Size(10,10); Probabilmente superfluo
+				tsmi.AutoSize = true;
+				tsmi.Text = txt;
+				tsmi.Click += handler;
+
+				if(pos < 0 || pos >= tsMenu.DropDownItems.Count)
+				{
+					// tsMenu.DropDownItems.Add(tsmi);
+					tsMenu.DropDownItems.Insert(tsMenu.DropDownItems.Count-1,tsmi); // Inserisce prima dell'ultima voce (Quit)
+				}
+				else
+				{
+					tsMenu.DropDownItems.Insert(pos,tsmi);
+				}
+			}
+			return tsmi;
+		}
 		/************************/
 
 		/**************************************/
 		// Virtual functions (to be overridden)
 		/**************************************/
-		
+
 		/// <summary>
 		/// Help function
 		/// </summary>
@@ -683,6 +714,8 @@ Testo lungo                                      con spazi inseriti per controll
 		}
 		#endif
 
+		/*********************************/
+		
 		private void InitializeComponent()
 		{
 			this.tsUpper = new System.Windows.Forms.ToolStrip();
@@ -732,10 +765,12 @@ Testo lungo                                      con spazi inseriti per controll
 			this.tsMenu.AccessibleName = "";
 			this.tsMenu.AutoToolTip = false;
 			this.tsMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.settingsToolStripMenuItem,
-            this.tsmiHelp,
-            this.tsmiQuit});
+			this.tsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[]
+			{
+				this.settingsToolStripMenuItem,
+				this.tsmiHelp,
+				this.tsmiQuit
+			});
 			this.tsMenu.Name = "tsMenu";
 			this.tsMenu.Size = new System.Drawing.Size(26, 22);
 			this.tsMenu.Text = "v";
@@ -758,6 +793,8 @@ Testo lungo                                      con spazi inseriti per controll
 			// tsmiQuit
 			// 
 			this.tsmiQuit.Name = "tsmiQuit";
+			//this.tsmiQuit.AutoSize = true;
+			//this.tsmiQuit.Size = new System.Drawing.Size(10,10);
 			this.tsmiQuit.Size = new System.Drawing.Size(116, 22);
 			this.tsmiQuit.Text = "Quit";
 			tsmiQuit.Click += tsmiQuit_Click;
@@ -901,6 +938,7 @@ Testo lungo                                      con spazi inseriti per controll
 
 		}
 		
+		/*********************************/
 
 		
 		
